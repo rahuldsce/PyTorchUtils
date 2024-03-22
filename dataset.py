@@ -4,6 +4,7 @@ import numpy as np
 
 from torch.utils.data import Dataset
 from torchvision import datasets
+from torchvision import transforms
 
 def mnist():
   train_transforms, test_transforms = transforms.mnist_transforms()
