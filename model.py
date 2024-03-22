@@ -3,7 +3,7 @@ import torch.nn.functional as F
 
 class Mnist(nn.Module):
     def __init__(self):
-        super(Net, self).__init__()
+        super(Mnist, self).__init__()
         # First convolutional layer: input size (1, 28, 28), output size (32, 26, 26)
         self.conv1 = nn.Conv2d(1, 32, kernel_size=3, bias=False)
         # Second convolutional layer: input size (32, 26, 26), output size (64, 24, 24)
@@ -55,7 +55,7 @@ class Cifar10_GN(nn.Module):
     return nn.Sequential(nn.Conv2d(in_channels=in_channels, out_channels=10, kernel_size = kernel_size, padding = 0, bias = False))
 
   def __init__(self, opts=[]):
-        super(Net, self).__init__()
+        super(Cifar10_GN, self).__init__()
         self.conv1 = self.conv_block(3, 16, 3) #32
         self.conv2 = self.conv_block(16, 32, 3) #32
         self.trans1 = self.trans_block(32, 16) #32
@@ -105,7 +105,7 @@ class Cifar10_LN(nn.Module):
     return nn.Sequential(nn.Conv2d(in_channels=in_channels, out_channels=10, kernel_size = kernel_size, padding = 0, bias = False))
 
   def __init__(self, opts=[]):
-        super(Net, self).__init__()
+        super(Cifar10_LN, self).__init__()
         self.conv1 = self.conv_block(3, 16, 3, input_shape=[32,32]) #32
         self.conv2 = self.conv_block(16, 32, 3, input_shape=[32,32]) #32
         self.trans1 = self.trans_block(32, 16) #32
