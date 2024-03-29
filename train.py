@@ -2,7 +2,6 @@
 
 from tqdm import tqdm
 import torch.nn.functional as F
-import matplotlib.pyplot as plt
 
 from . import models
 
@@ -51,18 +50,5 @@ def train(model, device, train_loader, optimizer, criterion, epoch, opts, hyper_
 
     pbar.set_description(desc= f'Loss={loss.item()} Batch_id={batch_idx} Accuracy={100*correct/processed:0.2f}')
     train_acc.append(100*correct/processed)
-
-    if scheduler:
-      scheduler.step()
-      if batch_idx > 0:
-        iterations.append(batch_idx-1)
-        lrs.append(scheduler.get_last_lr())
-
-  # Plot LR change if scheduler is defined
-  if scheduler:
-    plt.plot(iterations, lrs)
-    plt.xlabel("iterations")
-    plt.ylabel("lr")
-    plt.title(f"LR Change Epoch {epoch}")
-    plt.show()
+    
   return train_losses, train_acc
