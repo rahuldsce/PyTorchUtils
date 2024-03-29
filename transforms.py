@@ -1,5 +1,7 @@
 # transforms.py
 from torchvision import transforms
+from albumentations import HorizontalFlip, ShiftScaleRotate, CoarseDropout, Normalize
+from albumentations.pytorch import ToTensorV2
 
 
 # Train Phase transformations
@@ -26,6 +28,25 @@ def cifar10_transforms():
   transform_train = transforms.Compose([
      transforms.RandomCrop(32, padding=4),
      transforms.RandomHorizontalFlip(),
+     transforms.ToTensor(),
+     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+   ])
+  
+  transform_test = transforms.Compose([
+     transforms.ToTensor(),
+     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+   ])
+  
+  return transform_train, transform_test
+
+# Train Phase transformations
+def cifar10_transforms_alb():
+  transform_train = transforms.Compose([
+     HorizontalFlip(),
+     ShiftScaleRotate(),
+     CoarseDropout(max_holes=1, max_height=16, max_width=1, 
+                  min_holes=1, min_height=16, min_width=16, 
+                  fill_value=(0.5, 0.5, 0.5), mask_fill_value=None),
      transforms.ToTensor(),
      transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
    ])
