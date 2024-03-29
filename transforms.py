@@ -48,12 +48,12 @@ def cifar10_transforms_alb():
                   min_holes=1, min_height=16, min_width=16,   # Corrected parameters
                   fill_value=(0.5, 0.5, 0.5), mask_fill_value=None),
      ToTensorV2(),
-     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+     Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
    ])
   
   transform_test = transforms.Compose([
      ToTensorV2(),
-     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+     Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
    ])
   
   return transform_train, transform_test
