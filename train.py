@@ -3,7 +3,7 @@
 from tqdm import tqdm
 import torch.nn.functional as F
 
-def train(model, device, train_loader, optimizer, criterion, epoch, opts, hyper_params, scheduler=None):
+def train(model, device, train_loader, optimizer, criterion, epoch):
   model.train()
   pbar = tqdm(train_loader)
   correct = 0
