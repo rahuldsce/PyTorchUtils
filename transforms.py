@@ -41,21 +41,14 @@ def cifar10_transforms():
 
 # Train Phase transformations
 def cifar10_transforms_alb():
-  transform_train =  A.Compose([
-    A.HorizontalFlip(),
-    A.ShiftScaleRotate(),
-    A.CoarseDropout(
-      max_holes=1, max_height=16, max_width=16,  # Corrected parameters
-      min_holes=1, min_height=16, min_width=16,   # Corrected parameters
-      fill_value=(0.5, 0.5, 0.5), mask_fill_value=None),
-    A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-    ToTensorV2(),
-     
+  transform_train = transforms.Compose([
+     transforms.ToTensor(),
+     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
    ])
   
-  transform_test = A.Compose([
-     A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-     ToTensorV2(),
+  transform_test = transforms.Compose([
+     transforms.ToTensor(),
+     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
    ])
   
   return transform_train, transform_test
