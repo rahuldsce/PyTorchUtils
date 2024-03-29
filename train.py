@@ -3,8 +3,6 @@
 from tqdm import tqdm
 import torch.nn.functional as F
 
-from . import models
-
 def train(model, device, train_loader, optimizer, criterion, epoch, opts, hyper_params, scheduler=None):
   model.train()
   pbar = tqdm(train_loader)
@@ -31,10 +29,6 @@ def train(model, device, train_loader, optimizer, criterion, epoch, opts, hyper_
 
     # Calculate loss
     loss = criterion(y_pred, target)
-    # L1 Regularization
-    if models.ModelOpts.L1 in opts:
-      l1_lambda = hyper_params.get("l1_lambda", 0.1)
-      loss = l1_loss(model, loss, l1_lambda)
 
     train_losses.append(loss)
 
