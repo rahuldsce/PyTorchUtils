@@ -185,3 +185,50 @@ class Cifar10_LN(nn.Module):
       x = self.out(x)
       x = x.view(-1, 10)
       return F.log_softmax(x, dim=-1)
+
+import torch.nn.functional as F
+import torch.nn as nn
+
+class Cifar10_S9(nn.Module):
+    def conv_block(self, in_channels, out_channels, kernel_size=3, stride=1, padding=1, dilation = 1):
+        return nn.Sequential(
+            nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding, dilation = dilation),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(inplace=True)
+        )
+
+    def sep_conv_block(self, in_channels, out_channels, kernel_size=3):
+        return nn.Sequential(
+            nn.Conv2d(in_channels=in_channels, out_channels=in_channels, kernel_size=kernel_size, padding=1, groups=in_channels),
+            nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=1),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(inplace=True)
+        )
+
+    def out_block(self, in_channels, num_classes):
+        return nn.Sequential(
+            nn.Conv2d(in_channels=in_channels, out_channels=num_classes, kernel_size=1)
+        )
+
+    def __init__(self, num_classes=10):
+        super(Cifar10_S9, self).__init__()
+        self.conv1 = self.conv_block(3, 64)
+        self.conv2 = self.conv_block(64, 64, stride=2)
+        self.conv3 = self.conv_block(64, 64, stride=2)
+        self.sep_conv = self.sep_conv_block(64, 64)
+        self.dilated_conv = self.conv_block(64, 64, kernel_size=3, dilation=2)
+        self.conv4 = self.conv_block(64, 32)
+        self.gap = nn.AdaptiveAvgPool2d(1)
+        self.out = self.out_block(32, num_classes)
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.conv2(x)
+        x = self.conv3(x)
+        x = self.sep_conv(x)
+        x = self.dilated_conv(x)
+        x = self.conv4(x)
+        x = self.gap(x)
+        x = self.out(x)
+        x = x.view(-1, 10)
+        return F.log_softmax(x, dim=-1)
