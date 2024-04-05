@@ -233,7 +233,7 @@ class Cifar10_S9(nn.Module):
         x = x.view(-1, 10)
         return F.log_softmax(x, dim=-1)
 
-class CIFAR10_DAVID_RES_NET(nn.Module):
+class CIFAR10_S10_RES_NET(nn.Module):
     
     def prep_block (self, in_channels, out_channels, kernel_size, padding = 1, stride=1) :
         return nn.Sequential(
